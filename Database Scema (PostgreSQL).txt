@@ -1,0 +1,9 @@
+create extension if not exists ltree;
+create table nodes (
+  id text primary key,                   -- unique ID (could be UUID, or file ID from GDrive)
+  name text not null,                    -- file or folder name
+  parent_id text references nodes(id) on delete cascade,  -- parent node
+  type text check (type in ('file', 'folder')) not null,  -- file or folder
+  mime_type text,                        -- optional: for files, e.g., 'text/plain', 'image/png'
+  path ltree                             -- hierarchical path (ltree extension)
+);
